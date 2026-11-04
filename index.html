@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三年忠班社會科期中評量</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+    <style>
+        /* --- 內嵌樣式以確保離線可用 --- */
+        :root {
+            --primary: #0f766e;
+            --primary-light: #e0f2f1;
+            --primary-hover: #115e59;
+            --secondary: #64748b;
+            --secondary-light: #f1f5f9;
+            --secondary-hover: #475569;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --highlight-bg: #fffde7;
+            --highlight-underline: #26a69a;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        }
+        body {
+            font-family: "LXGW WenKai TC", cursive;
+            background-color: var(--background);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+            -webkit-text-size-adjust: 100%;
+            color: var(--text-main);
+        }
+        #app-container {
+            background-color: var(--surface);
+            width: 100%;
+            max-width: 56rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.25rem;
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.05em;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Pager inside Navbar */
+        .nav-pager {
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-light);
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            border: 1px solid var(--border);
+        }
+        .nav-pager button {
+            background: none;
+            border: none;
+            color: var(--secondary-hover);
+            padding: 0.5rem;
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+            touch-action: manipulation;
+        }
+        .nav-pager button svg {
+            pointer-events: none;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .nav-pager button:hover {
+            background-color: var(--border);
+            color: var(--text-main);
+            transform: none;
+        }
+        .nav-pager button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: none;
+        }
+        
+        /* Select wrappers */
+        .select-wrapper {
+            position: relative;
+        }
+        .select-wrapper select {
+            appearance: none;
+            -webkit-appearance: none;
+            font-family: inherit;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            color: var(--text-main);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+            width: auto;
+            max-width: 180px;
+        }
+        .select-wrapper select:focus {
+            border-color: var(--primary);
+        }
+        .select-wrapper::after {
+            content: "";
+            position: absolute;
+            right: 0.65rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 4px solid transparent;
+            border-top-color: var(--text-muted);
+            pointer-events: none;
+        }
+        .select-q select {
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            padding-right: 1.5rem;
+            max-width: 200px;
+            height: 44px;
+        }
+        .select-q::after {
+            right: 0.4rem;
+        }
+        
+        /* Buttons */
+        .btn-primary, .btn-secondary {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.875rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            box-shadow: none;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgb(15 118 110 / 0.1);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: var(--secondary-light);
+            color: var(--secondary-hover);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background-color: var(--border);
+            color: var(--text-main);
+            transform: translateY(-1px);
+        }
+        
+        /* Settings panel */
+        .settings-panel {
+            background-color: var(--background);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1.25rem;
+            transition: max-height 0.3s ease-out, opacity 0.3s, padding 0.3s;
+            max-height: 200px;
+            opacity: 1;
+            overflow: hidden;
+        }
+        .settings-panel.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .control-label {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .select-voice select {
+            width: 100%;
+            max-width: 260px;
+        }
+        .speed-slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-grow: 1;
+        }
+        #speed-control {
+            flex-grow: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+        #speed-control::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        #speed-value {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            min-width: 2.5rem;
+        }
+        
+        /* Quiz Area */
+        #quiz-area {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 260px;
+            background-color: var(--surface);
+        }
+        #preamble-text {
+            background-color: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.875rem 1.125rem;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+        #preamble-text p {
+            margin: 0 0 0.75rem 0;
+        }
+        #preamble-text p:last-child {
+            margin: 0;
+        }
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        #question-text {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            font-weight: 700;
+            color: var(--text-main);
+            white-space: pre-wrap;
+            flex-grow: 1;
+        }
+        #options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+        .option-item {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--surface);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-item:hover, #preamble-text span:hover, #question-text span.non-option:hover {
+            background-color: var(--highlight-bg);
+            border-color: var(--primary);
+        }
+        .speaking, .speaking:hover {
+            text-decoration: underline;
+            text-decoration-color: var(--highlight-underline);
+            text-decoration-thickness: 3px;
+            background-color: var(--highlight-bg);
+        }
+        
+        /* Footer */
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border);
+            background-color: var(--background);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 0.25rem; }
+            #app-container { border-radius: 0.5rem; }
+            .navbar { padding: 0.5rem 0.75rem; }
+            .logo { font-size: 1.15rem; }
+            .nav-pager { padding: 0.125rem; }
+            .nav-pager button { min-width: 36px; min-height: 36px; }
+            .select-wrapper select { font-size: 0.85rem; padding: 0.25rem 1.5rem 0.25rem 0.5rem; }
+            .select-q select { max-width: 100px; height: 36px; }
+            .btn-primary, .btn-secondary { padding: 0.375rem 0.65rem; font-size: 0.85rem; min-height: 36px; }
+            .btn-primary span { display: none; /* Hide text, keep icon on small mobile */ }
+            #quiz-area { padding: 0.75rem; min-height: 200px; }
+            #question-text { font-size: 1.05rem; }
+            .option-item { font-size: 0.95rem; padding: 0.6rem 0.75rem; }
+            footer { padding: 0.5rem 0.75rem; flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Top Navbar -->
+        <header class="navbar">
+            <div class="nav-left">
+                <span class="logo">三年忠班社會科期中評量</span>
+            </div>
+            <div class="nav-right">
+                <div class="nav-pager">
+                    <button id="prev-btn" title="上一題">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
+                    </button>
+                    <div class="select-wrapper select-q">
+                        <select id="question-select"></select>
+                    </div>
+                    <button id="next-btn" title="下一題">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>
+                    </button>
+                </div>
+                <button id="replay-btn" class="btn-primary" title="唸題目">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
+                    <span>唸題目</span>
+                </button>
+                <button id="settings-toggle-btn" class="btn-secondary" title="語音設定">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.17.311c.58.988.006 2.254-1.055 2.502l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.17a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.17-.311a1.464 1.464 0 0 1 1.055-2.502l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.17a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.86z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Collapsible Settings Panel (Default collapsed) -->
+        <div id="settings-panel" class="settings-panel collapsed">
+            <div class="settings-grid">
+                <div class="control-group">
+                    <label for="voice-select" class="control-label">選擇聲音:</label>
+                    <div class="select-wrapper select-voice">
+                        <select id="voice-select"></select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="speed-control" class="control-label">唸讀速度:</label>
+                    <div class="speed-slider-wrapper">
+                        <input id="speed-control" type="range" min="0.5" max="1.5" step="0.1" value="0.9">
+                        <span id="speed-value">0.9x</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main id="quiz-area">
+            <div id="preamble-text" class="text-base md:text-lg text-gray-700 font-medium" style="display: none;"></div>
+            <div class="question-header">
+                <div id="question-text"></div>
+            </div>
+            <ul id="options-list"></ul>
+        </main>
+        
+        <footer>
+            <p class="footer-text">© 2026 spedmix</p>
+        </footer>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                        "section": "一、情境題",
+                        "displayId": "1",
+                        "preamble": null,
+                        "question": "( )1. 哪一項不是戶外教育該做的事情？",
+                        "options": [
+                                    "① 查詢資料",
+                                    "② 觀察並紀錄",
+                                    "③ 自行到處跑",
+                                    "④ 與同學分享"
+                        ]
+            },
+            {
+                        "section": "一、情境題",
+                        "displayId": "2",
+                        "preamble": null,
+                        "question": "( )2. 抵達航空站後，不應該做什麼？",
+                        "options": [
+                                    "① 觀察建築特色",
+                                    "② 仔細聆聽導覽",
+                                    "③ 體驗飛行員的視角",
+                                    "④ 隨意碰觸展覽品"
+                        ]
+            },
+            {
+                        "section": "一、情境題",
+                        "displayId": "3",
+                        "preamble": null,
+                        "question": "( )3. 陳毫想要再次拜訪手工製麵，應該安排在哪個時間？",
+                        "options": [
+                                    "① 寒假時間",
+                                    "② 上課時間",
+                                    "③ 休館時間",
+                                    "④ 評量時間"
+                        ]
+            },
+            {
+                        "section": "一、情境題",
+                        "displayId": "4",
+                        "preamble": "陳瑞升上三年級後，不但在校時間變長了，要學習的科目也變多了，旁邊更有許多不認識的同學，令陳瑞非常緊張。",
+                        "question": "( )4. 哪一個不可能是新同學來的地方？",
+                        "options": [
+                                    "① 隔壁班的同學",
+                                    "② 轉學生",
+                                    "③ 外縣市搬來的同學",
+                                    "④ 畢業生"
+                        ]
+            },
+            {
+                        "section": "一、情境題",
+                        "displayId": "5",
+                        "preamble": null,
+                        "question": "( )5. 哪一個不是新的學習科目？",
+                        "options": [
+                                    "① 吳其：藝術",
+                                    "② 盧鴻：數學",
+                                    "③ 陳涼：社會",
+                                    "④ 許祥：自然"
+                        ]
+            },
+            {
+                        "section": "一、情境題",
+                        "displayId": "6",
+                        "preamble": null,
+                        "question": "( )6. 新同學在自我介紹時，台下同學不應該做什麼事情？",
+                        "options": [
+                                    "① 聊天",
+                                    "② 仔細聆聽",
+                                    "③ 熱情回應",
+                                    "④ 熱烈掌聲"
+                        ]
+            },
+            {
+                        "section": "一、情境題",
+                        "displayId": "7",
+                        "preamble": null,
+                        "question": "( )7. 新同學在自我介紹時，應該做什麼事情？",
+                        "options": [
+                                    "① 想好內容",
+                                    "② 面帶怒氣",
+                                    "③ 直接下台",
+                                    "④ 不禮貌發言"
+                        ]
+            },
+            {
+                        "section": "一、情境題",
+                        "displayId": "8",
+                        "preamble": null,
+                        "question": "( )8. 哪一個敘述不適合？",
+                        "options": [
+                                    "① 蔡折：大部分同學來自不同家庭",
+                                    "② 林桐：每個人的興趣都不同",
+                                    "③ 陳偉：新同學都該聽我的",
+                                    "④ 鄭義：大家成長經歷都不同"
+                        ]
+            },
+            {
+                        "section": "二、問答題",
+                        "displayId": "1",
+                        "preamble": null,
+                        "question": "不會的字可以寫注音，錯字、錯注音扣0.5分。\n1. 分配打掃工作時，要注意哪些事情？請寫出兩項。",
+                        "options": null
+            },
+            {
+                        "section": "二、問答題",
+                        "displayId": "2",
+                        "preamble": null,
+                        "question": "2. 請寫出兩個要開班會的原因。",
+                        "options": null
+            },
+            {
+                        "section": "三、習作題",
+                        "displayId": "1",
+                        "preamble": "ㄅ 複習　ㄆ 預習　ㄇ 仔細聽\n有效的學習方法\n上課前\n上課中\n上課後",
+                        "question": "1. 填入適當代號。",
+                        "options": null
+            },
+            {
+                        "section": "三、習作題",
+                        "displayId": "2",
+                        "preamble": "三年十班班級公約\n● 上課不能帶手機\n● 保持個人衛生整潔\n● 遵守上課時間\n● 與同學互相幫忙、和平相處",
+                        "question": "2. 請將沒有違反班級公約的同學打。\n( )1. 江瑞上課使用手機\n( )2. 盧微借同學文具\n( )3. 盧人在座位堆積垃圾\n( )4. 季君上課遲到\n( )5. 陳杰與同學吵架",
+                        "options": null
+            },
+            {
+                        "section": "四、配合題",
+                        "displayId": "1",
+                        "preamble": null,
+                        "question": "1. 請將開會順序填入1~5。\n( )(1) 提案討論\n( )(2) 散會\n( )(3) 主席宣布開會\n( )(4) 臨時動議\n( )(5) 幹部報告",
+                        "options": null
+            },
+            {
+                        "section": "四、配合題",
+                        "displayId": "2",
+                        "preamble": "A 校規　B 班規　C 其他",
+                        "question": "2. 請將適當代號填入空格中。\n( )(1) 穿著制服\n( )(2) 穿著班服\n( )(3) 遵守上學時間\n( )(4) 晨光媽媽的服務時間\n( )(5) 參加籃球社不可以穿拖鞋",
+                        "options": null
+            },
+            {
+                        "section": "四、配合題",
+                        "displayId": "3",
+                        "preamble": null,
+                        "question": "3. 請將學習計畫填入1~4。\n( )(1) 確實執行學習計畫\n( )(2) 安排學習計畫，排出順序\n( )(3) 搭配合適的方法及資源\n( )(4) 尋找想完成的事情",
+                        "options": null
+            },
+            {
+                        "section": "四、配合題",
+                        "displayId": "4",
+                        "preamble": null,
+                        "question": "4. 學習的方法有許多種，請將適合的畫○，不適合的打。\n( )(1) 林寧：查詢網路資源\n( )(2) 陳婕：參加文化活動\n( )(3) 鄭嵂：體驗傳統服飾\n( )(4) 陳桐：參加課後社團\n( )(5) 謝影：參加原住民族祭典\n( )(6) 錢而：觀看相關活動演出\n( )(7) 陳榕：到圖書館借書\n( )(8) 王誠：到主題館學習",
+                        "options": null
+            },
+            {
+                        "section": "四、配合題",
+                        "displayId": "5",
+                        "preamble": "ㄅ 主席　ㄆ 司儀　ㄇ 記錄",
+                        "question": "5. 請將適當代號填入空格中。\n( )(1) 他負責主持會議\n( )(2) 他宣布班會程序\n( )(3) 他負責記下內容",
+                        "options": null
+            },
+            {
+                        "section": "五、閱讀題",
+                        "displayId": "1",
+                        "preamble": "大家好，歡迎收聽今天的校園小故事！你有沒有想過，自己的頭髮和衣服，可以自己決定嗎？\n以前，有些學校會規定學生的髮型、頭髮長度，甚至要求男生、女生要留什麼樣的頭髮，這種規定就叫做「髮禁」。後來，教育部宣布解除校園髮禁，學生的頭髮應該受到尊重，學校也不能隨便幫學生剪頭髮。\n那學校是不是什麼都不能規定呢？其實也不是。為了安全、健康和學習，學校還是可以訂定一些合理的服裝儀容規定。例如，體育課要穿適合運動的服裝和鞋子，頭髮太長時，也可以提醒同學整理好，避免影響活動。\n不過，這些規定應該有合理的理由，在訂定規則時，也應該聽聽學生、老師和家長的想法。",
+                        "question": "( )1.「以前有些學校會規定學生的頭髮。」這是在說什麼？",
+                        "options": [
+                                    "① 髮禁",
+                                    "② 制服",
+                                    "③ 校規",
+                                    "④ 功課"
+                        ]
+            },
+            {
+                        "section": "五、閱讀題",
+                        "displayId": "2",
+                        "preamble": null,
+                        "question": "( )2. 學校訂定服裝規定時，哪一種做法比較合理？",
+                        "options": [
+                                    "① 規定大家一樣",
+                                    "② 要有合理理由",
+                                    "③ 只看老師喜歡",
+                                    "④ 規定越多越好"
+                        ]
+            },
+            {
+                        "section": "五、閱讀題",
+                        "displayId": "3",
+                        "preamble": null,
+                        "question": "( )3. 哪一項是學校可以規定的？",
+                        "options": [
+                                    "① 頭髮一定要剪短",
+                                    "② 體育課穿運動鞋",
+                                    "③ 男生只能短髮",
+                                    "④ 女生一定要綁頭髮"
+                        ]
+            },
+            {
+                        "section": "五、閱讀題",
+                        "displayId": "4",
+                        "preamble": null,
+                        "question": "( )4. 下列哪一種想法比較正確？",
+                        "options": [
+                                    "① 學校不能有任何規定",
+                                    "② 學生想穿什麼都可以",
+                                    "③ 合理規定也要尊重學生",
+                                    "④ 所有學生都要留短髮"
+                        ]
+            },
+            {
+                        "section": "五、閱讀題",
+                        "displayId": "5",
+                        "preamble": null,
+                        "question": "( )5. 體育老師請長頭髮的學生綁好頭髮，是為什麼？",
+                        "options": [
+                                    "① 限制髮型",
+                                    "② 上課安全",
+                                    "③ 大家一樣",
+                                    "④ 方便整理"
+                        ]
+            }
+];
+
+        let currentQuestionIndex = 0;
+        let currentPreamble = '';
+        const synth = window.speechSynthesis;
+        let utterance = new SpeechSynthesisUtterance();
+        utterance.lang = 'zh-TW';
+        utterance.rate = 0.9; 
+        let voices = [];
+
+        let preambleEl = document.getElementById('preamble-text');
+        let questionEl = document.getElementById('question-text');
+        const optionsEl = document.getElementById('options-list');
+        const selectEl = document.getElementById('question-select');
+        const voiceSelectEl = document.getElementById('voice-select');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const replayBtn = document.getElementById('replay-btn');
+        const speedControl = document.getElementById('speed-control');
+        const speedValue = document.getElementById('speed-value');
+        const settingsToggleBtn = document.getElementById('settings-toggle-btn');
+        const settingsPanel = document.getElementById('settings-panel');
+
+        function populateVoiceList() {
+            voices = synth.getVoices().filter(voice => voice.lang.startsWith('zh'));
+            voiceSelectEl.innerHTML = '';
+            
+            if (voices.length === 0) {
+                const option = document.createElement('option');
+                option.textContent = '找不到中文語音';
+                voiceSelectEl.appendChild(option);
+                return;
+            }
+
+            voices.forEach((voice, i) => {
+                const option = document.createElement('option');
+                option.textContent = voice.name;
+                option.value = i;
+                voiceSelectEl.appendChild(option);
+            });
+
+            let defaultVoiceIndex = voices.findIndex(voice => voice.name.includes('Yating') && voice.lang === 'zh-TW');
+            if (defaultVoiceIndex === -1) defaultVoiceIndex = voices.findIndex(voice => voice.name === 'Google 國語（臺灣）');
+            if (defaultVoiceIndex === -1) defaultVoiceIndex = 0;
+            if (voices[defaultVoiceIndex]) {
+                utterance.voice = voices[defaultVoiceIndex];
+                voiceSelectEl.selectedIndex = defaultVoiceIndex;
+            }
+        }
+        
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = populateVoiceList;
+        }
+
+        function speak(text) {
+            synth.cancel();
+            utterance.text = text;
+            utterance.rate = parseFloat(speedControl.value);
+            const selectedVoiceIndex = voiceSelectEl.value;
+            if (voices[selectedVoiceIndex]) utterance.voice = voices[selectedVoiceIndex];
+            synth.speak(utterance);
+        }
+
+        function speakAndHighlight(text, element) {
+            document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+            element.classList.add('speaking');
+            const cleanup = () => {
+                element.classList.remove('speaking');
+                utterance.onend = null;
+                utterance.onerror = null;
+            };
+            utterance.onend = cleanup;
+            utterance.onerror = cleanup;
+            speak(text);
+        }
+        
+        function renderPreamble(text) {
+            preambleEl.innerHTML = '';
+            if (!text) {
+                preambleEl.style.display = 'none';
+                return;
+            }
+            preambleEl.style.display = 'block';
+
+            const paragraphs = text.split('\n').filter(p => p.trim() !== '');
+            paragraphs.forEach(pText => {
+                const pElement = document.createElement('p');
+                const sentences = pText.match(/[^。？！…，,]+([。？！…，,]|…{2,})?/g) || [pText];
+                sentences.forEach(sText => {
+                    const sentenceSpan = document.createElement('span');
+                    sentenceSpan.textContent = sText;
+                    sentenceSpan.addEventListener('click', (event) => {
+                        speakAndHighlight(event.currentTarget.textContent, event.currentTarget);
+                    });
+                    pElement.appendChild(sentenceSpan);
+                });
+                preambleEl.appendChild(pElement);
+            });
+        }
+
+        function renderQuestion(index) {
+            const question = questions[index];
+            
+            let finalPreamble = question.preamble;
+            
+            if (finalPreamble !== currentPreamble) {
+                renderPreamble(finalPreamble);
+                currentPreamble = finalPreamble;
+            } else if (!finalPreamble && currentPreamble) {
+                renderPreamble(null);
+                currentPreamble = null;
+            }
+            
+            questionEl.innerHTML = '';
+            const questionText = question.question;
+            const sentences = questionText.split('\n').flatMap(line => line.match(/[^。？！…，,]+([。？！…，,]|…{2,})?/g) || [line]);
+
+             sentences.forEach((sText, i) => {
+                if (sText.trim() === '') return;
+                const sentenceSpan = document.createElement('span');
+                sentenceSpan.textContent = sText;
+                if (question.options === null) {
+                    sentenceSpan.classList.add('non-option');
+                    sentenceSpan.addEventListener('click', (event) => {
+                        speakAndHighlight(event.currentTarget.textContent, event.currentTarget);
+                    });
+                } else {
+                     sentenceSpan.addEventListener('click', (event) => {
+                        speakAndHighlight(event.currentTarget.textContent, event.currentTarget);
+                    });
+                }
+                questionEl.appendChild(sentenceSpan);
+                if (i < sentences.length -1 && question.question.includes('\n')) {
+                    questionEl.appendChild(document.createElement('br'));
+                }
+            });
+
+            optionsEl.innerHTML = '';
+            if (question.options && question.options.length > 0) {
+                question.options.forEach(optionText => {
+                    const li = document.createElement('li');
+                    li.textContent = optionText;
+                    li.className = 'option-item';
+                    li.addEventListener('click', (event) => {
+                        speakAndHighlight(event.currentTarget.textContent, event.currentTarget);
+                    });
+                    optionsEl.appendChild(li);
+                });
+            }
+
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === questions.length - 1;
+            selectEl.value = index;
+        }
+
+        // --- Event Listeners ---
+        prevBtn.addEventListener('click', () => {
+            synth.cancel();
+            document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion(currentQuestionIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            synth.cancel();
+            document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion(currentQuestionIndex);
+            }
+        });
+        
+        replayBtn.addEventListener('click', () => {
+            const question = questions[currentQuestionIndex];
+            let preambleText = question.preamble || '';
+
+            const optionsText = question.options ? question.options.join(', ') : '';
+            const textToSpeak = `${preambleText} ${question.question}。 選項有： ${optionsText}`;
+            speak(textToSpeak);
+        });
+
+        selectEl.addEventListener('change', (e) => {
+            synth.cancel();
+            document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+            currentQuestionIndex = parseInt(e.target.value, 10);
+            renderQuestion(currentQuestionIndex);
+        });
+        
+        voiceSelectEl.addEventListener('change', () => {
+            const selectedVoiceIndex = voiceSelectEl.value;
+            if (voices[selectedVoiceIndex]) utterance.voice = voices[selectedVoiceIndex];
+        });
+
+        speedControl.addEventListener('input', (e) => {
+            const speed = parseFloat(e.target.value);
+            utterance.rate = speed;
+            speedValue.textContent = `${speed.toFixed(1)}x`;
+            if (synth.speaking) {
+                speak(utterance.text); // Respeak with new speed
+            }
+        });
+
+        settingsToggleBtn.addEventListener('click', () => {
+            settingsPanel.classList.toggle('collapsed');
+        });
+
+        function init() {
+            selectEl.innerHTML = '';
+            let currentSection = "";
+            let currentOptgroup = null;
+
+            questions.forEach((q, index) => {
+                if (q.section !== currentSection) {
+                    currentSection = q.section;
+                    currentOptgroup = document.createElement('optgroup');
+                    currentOptgroup.label = currentSection;
+                    selectEl.appendChild(currentOptgroup);
+                }
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${q.section} 第 ${q.displayId} 題`;
+                if (currentOptgroup) currentOptgroup.appendChild(option);
+            });
+
+            populateVoiceList(); 
+            renderQuestion(currentQuestionIndex);
+        }
+
+        init();
+    </script>
+</body>
+</html>
